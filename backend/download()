@@ -1,0 +1,29 @@
+function download(){
+    let url = document.getElementById("url").value;
+    if(!url){document.getElementById("status").innerText="❌ Please enter a link";return;}
+
+    let type = document.querySelector('input[name="type"]:checked').value;
+    let quality = document.getElementById("quality").value;
+    let endpoint = platform==="youtube" ? "/download/youtube" : "/download/instagram";
+
+    document.getElementById("status").innerText="⏳ Downloading...";
+
+    fetch("http://127.0.0.1:5000"+endpoint,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({url:url,type:type,quality:quality})
+    })
+    .then(res=>res.blob())
+    .then(blob=>{
+        let a=document.createElement("a");
+        a.href=URL.createObjectURL(blob);
+        a.download=url.split("/").pop()+".mp4";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        document.getElementById("status").innerText="✅ Download finished!";
+    })
+    .catch(err=>{
+        document.getElementById("status").innerText="❌ Download failed: "+err;
+    });
+}
