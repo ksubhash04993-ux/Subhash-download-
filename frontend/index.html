@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SubhashCyberSecurity Downloader</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Courier New', monospace;
+}
+body{
+    background:black;
+    color:#00ff00;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+.container{
+    max-width:420px;
+    margin:40px auto;
+    padding:20px;
+    background:rgba(0,0,0,0.85);
+    border:2px solid #00ff00;
+    border-radius:10px;
+    box-shadow:0 0 20px #00ff00;
+}
+h1{
+    text-align:center;
+    margin-bottom:15px;
+    text-shadow:0 0 10px #00ff00;
+}
+.platforms{
+    display:flex;
+    justify-content:space-around;
+    margin:15px 0;
+}
+.platforms button{
+    background:black;
+    border:2px solid #00ff00;
+    color:#00ff00;
+    padding:10px 15px;
+    cursor:pointer;
+    border-radius:6px;
+}
+.platforms button.active{
+    background:#00ff00;
+    color:black;
+}
+input[type="text"]{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    background:black;
+    color:#00ff00;
+    border:2px solid #00ff00;
+    border-radius:6px;
+}
+input[type="text"]:focus{
+    outline:none;
+    box-shadow:0 0 10px #00ff00;
+}
+.options{
+    margin:10px 0;
+}
+select{
+    width:100%;
+    padding:8px;
+    background:black;
+    color:#00ff00;
+    border:2px solid #00ff00;
+    border-radius:6px;
+    margin-top:5px;
+}
+.download-btn{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    font-size:16px;
+    background:black;
+    border:2px solid #00ff00;
+    color:#00ff00;
+    cursor:pointer;
+    border-radius:6px;
+    transition:0.3s;
+}
+.download-btn:hover{
+    background:#00ff00;
+    color:black;
+}
+.status{
+    margin-top:10px;
+    text-align:center;
+}
+.footer{
+    text-align:center;
+    margin-top:15px;
+    font-size:12px;
+    opacity:0.7;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="container">
+    <h1>SUBHASH<br>CYBERSECURITY</h1>
+
+    <div class="platforms">
+        <button id="youtubeBtn" onclick="selectPlatform('youtube')">
+            <i class="fab fa-youtube"></i> YouTube
+        </button>
+        <button id="instagramBtn" onclick="selectPlatform('instagram')">
+            <i class="fab fa-instagram"></i> Instagram
+        </button>
+    </div>
+
+    <input type="text" id="url" placeholder="Paste video link here">
+
+    <div class="options">
+        <label><input type="radio" name="type" value="video" checked> Video</label>
+        <label style="margin-left:15px;"><input type="radio" name="type" value="audio"> Audio</label>
+    </div>
+
+    <select id="quality">
+        <option>4K</option>
+        <option>1080p</option>
+        <option>720p</option>
+        <option>480p</option>
+    </select>
+
+    <button class="download-btn" onclick="download()">DOWNLOAD</button>
+
+    <div class="status" id="status"></div>
+
+    <div class="footer">
+        Educational purpose only ⚠️
+    </div>
+</div>
+
+<script>
+let platform = "";
+
+function selectPlatform(p){
+    platform = p;
+    document.getElementById("youtubeBtn").classList.remove("active");
+    document.getElementById("instagramBtn").classList.remove("active");
+    if(p==="youtube") document.getElementById("youtubeBtn").classList.add("active");
+    if(p==="instagram") document.getElementById("instagramBtn").classList.add("active");
+}
+
+function download(){
+    let url = document.getElementById("url").value;
+    if(!url){
+        document.getElementById("status").innerText="❌ Please enter a link";
+        return;
+    }
+    document.getElementById("status").innerText="✅ Download started (demo)";
+}
+
+/* MATRIX EFFECT */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*";
+letters = letters.split("");
+let fontSize = 16;
+let columns = canvas.width / fontSize;
+let drops = [];
+for(let x=0;x<columns;x++) drops[x]=1;
+function draw(){
+    ctx.fillStyle="rgba(0,0,0,0.05)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#00ff00";
+    ctx.font=fontSize+"px monospace";
+    for(let i=0;i<drops.length;i++){
+        let text = letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+        if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+            drops[i]=0;
+        drops[i]++;
+    }
+}
+setInterval(draw,33);
+</script>
+
+</body>
+</html>
